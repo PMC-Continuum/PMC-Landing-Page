@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Continuum — El hilo invisible de tu salud</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#111010;
+  --ink2:#3a3a3a;
+  --ink3:#777;
+  --ink4:#aaa;
+  --bg:#FAFAF8;
+  --bg2:#F3F2EF;
+  --bg3:#ECEAE4;
+  --white:#ffffff;
+  --line:#E0DED8;
+  --green:#1a7a4a;
+  --green-bg:#f0faf4;
+  --red:#b94040;
+  --red-bg:#fdf3f3;
+  --amber:#b87820;
+  --amber-bg:#fdf8f0;
+  --serif:'Lora',Georgia,serif;
+  --sans:'Inter',system-ui,sans-serif;
+  --max:1080px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* ─── NAV ─── */
+nav{
+  position:sticky;top:0;z-index:99;
+  background:rgba(250,250,248,0.92);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+  height:56px;display:flex;align-items:center;
+  padding:0 clamp(20px,5%,80px);
+  justify-content:space-between;
+}
+.nav-logo{font-family:var(--serif);font-size:1.15rem;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:-0.01em}
+.nav-right{display:flex;align-items:center;gap:28px}
+.nav-right a{font-size:0.8rem;color:var(--ink3);text-decoration:none;font-weight:400;transition:color .2s}
+.nav-right a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink)!important;color:var(--white)!important;padding:7px 18px;border-radius:6px;font-size:0.8rem!important;font-weight:500!important;transition:opacity .2s!important}
+.nav-cta:hover{opacity:0.8!important}
+
+/* ─── HERO ─── */
+.hero{
+  min-height:calc(100vh - 56px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;
+  padding:80px clamp(20px,8%,160px) 60px;
+  position:relative;overflow:hidden;
+}
+.hero-noise{
+  position:absolute;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:0.72rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--ink3);
+  margin-bottom:32px;
+  border-bottom:1px solid var(--line);
+  padding-bottom:12px;
+}
+.eyebrow::before{content:'◆';font-size:0.5rem;color:var(--ink4)}
+h1.hero-title{
+  font-family:var(--serif);
+  font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:500;
+  line-height:1.08;
+  letter-spacing:-0.025em;
+  color:var(--ink);
+  max-width:820px;
+  margin-bottom:28px;
+}
+h1.hero-title em{font-style:italic;color:var(--ink3)}
+.hero-sub{
+  font-size:clamp(0.95rem,1.5vw,1.1rem);
+  color:var(--ink3);
+  max-width:500px;
+  font-weight:300;
+  line-height:1.8;
+  margin-bottom:44px;
+}
+.hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:72px}
+.btn-dark{background:var(--ink);color:#fff;padding:13px 28px;border-radius:7px;font-size:0.9rem;font-weight:500;text-decoration:none;border:none;cursor:pointer;transition:opacity .2s,transform .15s;display:inline-block}
+.btn-dark:hover{opacity:.85;transform:translateY(-1px)}
+.btn-light{background:transparent;color:var(--ink);padding:12px 24px;border-radius:7px;font-size:0.9rem;font-weight:400;text-decoration:none;border:1px solid var(--line);cursor:pointer;transition:background .2s,transform .15s;display:inline-block}
+.btn-light:hover{background:var(--bg2);transform:translateY(-1px)}
+
+/* hero metrics bar */
+.metrics-bar{
+  display:flex;gap:0;
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
+  background:var(--white);
+  width:100%;max-width:640px;
+}
+.metric{flex:1;padding:20px 16px;text-align:center;border-right:1px solid var(--line)}
+.metric:last-child{border-right:none}
+.metric-n{font-family:var(--serif);font-size:1.9rem;font-weight:500;line-height:1;color:var(--ink);margin-bottom:5px}
+.metric-l{font-size:0.7rem;color:var(--ink4);line-height:1.4}
+
+/* ─── SECTIONS ─── */
+section{padding:100px clamp(20px,5%,80px)}
+.sec-max{max-width:var(--max);margin:0 auto}
+.overline{font-size:0.7rem;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink4);margin-bottom:18px}
+h2.sec-title{
+  font-family:var(--serif);
+  font-size:clamp(2rem,4.5vw,3.2rem);
+  font-weight:500;
+  line-height:1.15;
+  letter-spacing:-0.02em;
+  color:var(--ink);
+  max-width:620px;
+  margin-bottom:18px;
+}
+.sec-sub{color:var(--ink3);font-size:1rem;max-width:520px;line-height:1.8;font-weight:300;margin-bottom:52px}
+
+/* ─── PROBLEM ─── */
+.problem-layout{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.problem-cell{background:var(--white);padding:36px 32px}
+.problem-cell-label{font-size:0.7rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink4);margin-bottom:14px}
+.problem-cell h3{font-family:var(--serif);font-size:1.25rem;font-weight:500;color:var(--ink);margin-bottom:10px;line-height:1.25}
+.problem-cell p{font-size:0.88rem;color:var(--ink3);line-height:1.75}
+.problem-stat{font-family:var(--serif);font-size:2.8rem;font-weight:400;color:var(--ink);margin-bottom:6px;line-height:1}
+
+/* ─── PROFILES TOGGLE ─── */
+.profiles-section{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.profile-switcher{
+  display:flex;gap:0;
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
+  width:fit-content;
+  margin:0 auto 52px;
+}
+.profile-btn{
+  padding:12px 32px;
+  font-size:0.85rem;font-weight:500;
+  cursor:pointer;border:none;background:transparent;
+  color:var(--ink3);transition:background .2s,color .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.profile-btn.active{background:var(--ink);color:#fff}
+.profile-btn span{font-size:1.1rem}
+.profile-panel{display:none}
+.profile-panel.active{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.profile-left h3{font-family:var(--serif);font-size:2rem;font-weight:500;margin-bottom:16px;line-height:1.2}
+.profile-left p{font-size:0.95rem;color:var(--ink3);line-height:1.8;margin-bottom:28px;font-weight:300}
+.profile-points{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:36px}
+.profile-points li{
+  display:flex;gap:14px;align-items:flex-start;
+  font-size:0.9rem;line-height:1.65;color:var(--ink2);
+}
+.pp-icon{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;margin-top:1px;
+  background:var(--bg3);
+}
+.profile-right{
+  background:var(--white);
+  border:1px solid var(--line);
+  border-radius:12px;
+  overflow:hidden;
+}
+.mock-topbar{
+  background:var(--bg2);
+  border-bottom:1px solid var(--line);
+  padding:12px 16px;
+  display:flex;align-items:center;gap:8px;
+}
+.mock-dot{width:10px;height:10px;border-radius:50%}
+.mock-title{font-size:0.72rem;font-weight:500;color:var(--ink3);margin-left:8px}
+.mock-body{padding:24px}
+.mock-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--bg3);font-size:0.82rem;
+}
+.mock-row:last-child{border-bottom:none}
+.mock-label{color:var(--ink3);font-weight:400}
+.mock-val{font-weight:500;color:var(--ink);font-family:var(--serif)}
+.mock-badge{font-size:0.68rem;font-weight:600;padding:3px 10px;border-radius:100px}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-amber{background:var(--amber-bg);color:var(--amber)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.mock-chart{margin-top:16px;padding:16px;background:var(--bg2);border-radius:8px}
+.mock-chart-label{font-size:0.7rem;color:var(--ink4);margin-bottom:10px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase}
+.sparkline{display:flex;align-items:flex-end;gap:4px;height:48px}
+.spark-bar{flex:1;border-radius:3px 3px 0 0;transition:height .3s;background:var(--bg3)}
+.spark-bar.hi{background:var(--ink);opacity:0.7}
+.spark-bar.md{background:var(--ink);opacity:0.4}
+
+/* ─── FEATURES BOARD ─── */
+.features-board{
+  display:grid;grid-template-columns:220px 1fr;
+  border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  background:var(--white);
+}
+.ftabs{border-right:1px solid var(--line);padding:8px}
+.ftab{
+  width:100%;text-align:left;
+  display:flex;align-items:center;gap:10px;
+  padding:10px 14px;border-radius:7px;
+  font-size:0.82rem;color:var(--ink3);
+  border:none;background:transparent;cursor:pointer;
+  transition:background .15s,color .15s;font-family:var(--sans);
+}
+.ftab:hover{background:var(--bg2)}
+.ftab.active{background:var(--bg2);color:var(--ink);font-weight:500}
+.ftab-icon{font-size:1rem;width:20px;text-align:center}
+.fpanel{padding:36px 40px;display:none;min-height:320px}
+.fpanel.active{display:block}
+.fpanel h3{font-family:var(--serif);font-size:1.6rem;font-weight:500;margin-bottom:12px;letter-spacing:-0.01em}
+.fpanel > p{font-size:0.9rem;color:var(--ink3);line-height:1.8;margin-bottom:24px;font-weight:300;max-width:480px}
+.ftags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.ftag{font-size:0.72rem;font-weight:500;padding:4px 12px;border-radius:100px;background:var(--bg2);color:var(--ink3);border:1px solid var(--line)}
+.fmock{background:var(--bg2);border:1px solid var(--line);border-radius:9px;padding:18px;font-size:0.82rem}
+.fmock-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);color:var(--ink3)}
+.fmock-row:last-child{border-bottom:none}
+.fdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.fdot-g{background:#22c55e}.fdot-y{background:#eab308}.fdot-r{background:#ef4444}
+.fmock-row strong{color:var(--ink)}
+
+/* ─── CALCULATOR ─── */
+.calc-section{background:var(--ink);color:#fff}
+.calc-section .overline{color:#555}
+.calc-section h2.sec-title{color:#fff;max-width:100%}
+.calc-section .sec-sub{color:#888;max-width:640px}
+.calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.calc-box{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:32px}
+.calc-box h3{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:#fff;margin-bottom:24px}
+.calc-row{margin-bottom:22px}
+.calc-label{font-size:0.78rem;color:#888;margin-bottom:8px;font-weight:400;display:flex;justify-content:space-between}
+.calc-label span{color:#fff;font-weight:500}
+input[type=range]{width:100%;accent-color:#fff;cursor:pointer;height:4px}
+.calc-result{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:32px}
+.calc-result h3{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:#888;margin-bottom:24px}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #1e1e1e}
+.result-row:last-child{border-bottom:none}
+.result-label{font-size:0.82rem;color:#666}
+.result-val{font-family:var(--serif);font-size:1.4rem;color:#fff}
+.result-highlight{background:linear-gradient(135deg,#1a1a1a,#222);border:1px solid #333;border-radius:10px;padding:20px;margin-top:20px;text-align:center}
+.result-big{font-family:var(--serif);font-size:3rem;color:#fff;line-height:1;margin-bottom:6px}
+.result-big-label{font-size:0.78rem;color:#555}
+.bar-chart{margin-top:28px}
+.bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.bar-name{font-size:0.75rem;color:#666;width:120px;text-align:right;flex-shrink:0}
+.bar-track{flex:1;background:#222;border-radius:3px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+.bar-val{font-size:0.75rem;color:#888;width:60px;flex-shrink:0}
+
+/* ─── STEPS ─── */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.step-cell{background:var(--white);padding:36px 28px}
+.step-num{font-family:var(--serif);font-size:3rem;font-weight:400;color:var(--bg3);line-height:1;margin-bottom:20px}
+.step-cell h3{font-size:0.95rem;font-weight:600;margin-bottom:10px;color:var(--ink)}
+.step-cell p{font-size:0.85rem;color:var(--ink3);line-height:1.75}
+
+/* ─── RISK ─── */
+.risk-section{background:var(--red-bg);border-top:1px solid #f0d5d5;border-bottom:1px solid #f0d5d5}
+.risk-inner{max-width:680px;margin:0 auto;text-align:center}
+.risk-section .overline{color:var(--red)}
+.risk-section h2.sec-title{max-width:100%;margin:0 auto 16px}
+.risk-section .sec-sub{max-width:100%;margin:0 auto 40px}
+.risk-list{list-style:none;text-align:left;max-width:500px;margin:0 auto 44px;display:flex;flex-direction:column;gap:12px}
+.risk-list li{font-size:0.9rem;color:var(--ink2);line-height:1.65;display:flex;gap:12px;align-items:flex-start}
+.risk-x{color:var(--red);font-weight:700;font-size:1rem;flex-shrink:0;margin-top:2px}
+
+/* ─── TESTIMONIALS ─── */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testi-card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:28px;transition:transform .2s}
+.testi-card:hover{transform:translateY(-3px)}
+.testi-quote{font-family:var(--serif);font-size:0.95rem;font-style:italic;font-weight:400;color:var(--ink);line-height:1.8;margin-bottom:20px}
+.testi-quote::before{content:'\201C';font-size:2.5rem;color:var(--line);line-height:0;vertical-align:-0.5em;margin-right:2px}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-avatar{width:36px;height:36px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1rem;border:1px solid var(--line);flex-shrink:0}
+.testi-name{font-size:0.82rem;font-weight:600;color:var(--ink)}
+.testi-role{font-size:0.73rem;color:var(--ink4)}
+.traction-row{display:flex;gap:48px;justify-content:center;flex-wrap:wrap;margin-top:56px;padding-top:40px;border-top:1px solid var(--line)}
+.tr-item{text-align:center}
+.tr-n{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--ink);line-height:1;margin-bottom:4px}
+.tr-l{font-size:0.72rem;color:var(--ink4)}
+
+/* ─── PRICING ─── */
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:700px;margin:0 auto}
+.price-card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:32px}
+.price-card.featured{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.price-tag-row{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
+.price-plan{font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:14px}
+.price-big{font-family:var(--serif);font-size:2.4rem;font-weight:400;color:var(--ink);line-height:1}
+.price-per{font-size:0.82rem;color:var(--ink4)}
+.price-desc{font-size:0.82rem;color:var(--ink3);margin-bottom:24px;line-height:1.6}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:9px;margin-bottom:28px}
+.price-features li{font-size:0.83rem;color:var(--ink2);display:flex;gap:9px;align-items:flex-start}
+.pf-check{color:var(--green);font-weight:700;flex-shrink:0}
+
+/* ─── CTA FINAL ─── */
+.cta-section{background:var(--ink);color:#fff;text-align:center;padding:100px clamp(20px,8%,160px)}
+.cta-section h2{font-family:var(--serif);font-size:clamp(2.2rem,5vw,4rem);font-weight:400;line-height:1.1;letter-spacing:-0.02em;max-width:680px;margin:0 auto 16px;color:#fff}
+.cta-section p{color:#666;font-size:1rem;max-width:420px;margin:0 auto 44px;font-weight:300}
+.email-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.email-input{
+  padding:13px 20px;border-radius:7px;border:1px solid #333;
+  background:#111;color:#fff;font-size:0.9rem;font-family:var(--sans);
+  min-width:260px;outline:none;transition:border-color .2s;
+}
+.email-input:focus{border-color:#555}
+.email-input::placeholder{color:#444}
+.cta-note{font-size:0.75rem;color:#444}
+
+/* ─── FOOTER ─── */
+footer{border-top:1px solid var(--line);padding:28px clamp(20px,5%,80px);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-logo{font-family:var(--serif);font-size:1rem;color:var(--ink4)}
+.footer-note{font-size:0.75rem;color:var(--ink4)}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hero>*{animation:fadeUp .5s ease both}
+.eyebrow{animation-delay:.05s}.hero-title{animation-delay:.12s}.hero-sub{animation-delay:.2s}.hero-actions{animation-delay:.27s}.metrics-bar{animation-delay:.34s}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .problem-layout,.profile-panel.active,.calc-grid,.steps-grid,.testi-grid,.pricing-grid{grid-template-columns:1fr}
+  .features-board{grid-template-columns:1fr}
+  .ftabs{display:flex;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);padding:6px;gap:4px}
+  .ftab{white-space:nowrap}
+  .nav-right a:not(.nav-cta){display:none}
+  .metrics-bar{flex-direction:column}
+  .metric{border-right:none;border-bottom:1px solid var(--line)}
+  .metric:last-child{border-bottom:none}
+  .traction-row{gap:28px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Continuum</a>
+  <div class="nav-right">
+    <a href="#perfiles">Quién soy</a>
+    <a href="#funcionalidades">Cómo funciona</a>
+    <a href="#calculadora">Calculadora</a>
+    <a href="#testimonios">Testimonios</a>
+    <a href="#mvp" class="nav-cta">Probar MVP →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="inicio">
+  <div class="hero-noise"></div>
+  <div class="eyebrow">Salud crónica · Colombia · 2025</div>
+  <h1 class="hero-title">El hilo invisible<br>entre tus consultas<br><em>y tu bienestar</em></h1>
+  <p class="hero-sub">Continuum registra cómo te sientes cada día. Tu médico llega preparado. Tu familia, tranquila. Tú, acompañado.</p>
+  <div class="hero-actions">
+    <a href="#mvp" class="btn-dark">Unirme a la lista de espera →</a>
+    <a href="#perfiles" class="btn-light">¿Para quién es esto?</a>
+  </div>
+  <div class="metrics-bar">
+    <div class="metric">
+      <div class="metric-n">70%</div>
+      <div class="metric-l">de info vital se pierde<br>entre consultas</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">85%</div>
+      <div class="metric-l">de usuarios validó<br>facilidad de uso</div>
+    </div>
+    <div class="metric">
+      <div class="metric-n">+20</div>
+      <div class="metric-l">entrevistas de validación<br>realizadas en Colombia</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section>
+  <div class="sec-max">
+    <div class="overline">El problema</div>
+    <h2 class="sec-title">La salud crónica vive en la memoria del paciente</h2>
+    <p class="sec-sub">Las consultas son cada 3 meses. Los síntomas se olvidan. El médico toma decisiones con datos incompletos. Y la familia vive en incertidumbre.</p>
+    <div class="problem-layout">
+      <div class="problem-cell">
+        <div class="problem-cell-label">El dato que asusta</div>
+        <div class="problem-stat">70%</div>
+        <h3>de la información vital desaparece entre consultas</h3>
+        <p>El sistema de salud es reactivo: actúa cuando el daño ya está hecho. Los pacientes con enfermedades crónicas necesitan seguimiento continuo, no intervenciones de emergencia.</p>
+      </div>
+      <div class="problem-cell">
+        <div class="problem-cell-label">La brecha real</div>
+        <h3>Tres actores desconectados</h3>
+        <p style="margin-bottom:16px">El <strong>paciente</strong> no puede recordar 3 meses de síntomas. El <strong>médico</strong> toma decisiones sin datos continuos. La <strong>familia</strong> vive con ansiedad constante al no saber si todo está bien.</p>
+        <p>Las bombas de insulina y biosensores premium cuestan más de $35 millones COP. Continuum funciona con tu celular y tu voz.</p>
+      </div>
+      <div class="problem-cell">
+        <div class="problem-cell-label">Consecuencia</div>
+        <h3>Urgencias que se pudieron prevenir</h3>
+        <p>Las descompensaciones llegan sin aviso visible porque nadie estaba mirando los patrones. Hospitalización, trauma familiar, costos evitables.</p>
+      </div>
+      <div class="problem-cell">
+        <div class="problem-cell-label">La paradoja</div>
+        <h3>Tecnología cara que llega tarde</h3>
+        <p>Los wearables de $35M existen. Pero para el 80% de pacientes crónicos del sistema de salud colombiano, la única herramienta disponible es su celular. Continuum la convierte en suficiente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERFILES -->
+<section class="profiles-section" id="perfiles">
+  <div class="sec-max">
+    <div class="overline" style="text-align:center">¿Para quién es Continuum?</div>
+    <h2 class="sec-title" style="text-align:center;margin:0 auto 16px">Diseñado para ti,<br>sea quien seas</h2>
+    <p class="sec-sub" style="text-align:center;margin:0 auto 40px">Cada usuario tiene una vista diferente. El mismo dato, la perspectiva correcta.</p>
+    <div class="profile-switcher">
+      <button class="profile-btn active" onclick="switchProfile('paciente',this)">
+        <span>🧑‍🦳</span> Soy paciente / cuidador
+      </button>
+      <button class="profile-btn" onclick="switchProfile('medico',this)">
+        <span>🩺</span> Soy médico / especialista
+      </button>
+    </div>
+
+    <!-- PACIENTE -->
+    <div class="profile-panel active" id="profile-paciente">
+      <div class="profile-left">
+        <h3>Tu salud,<br><em style="font-family:var(--serif);font-style:italic">sin carga mental</em></h3>
+        <p>Tú (o tu familiar) no debería tener que ser la historia clínica humana del paciente. Habla naturalmente. Continuum hace el resto.</p>
+        <ul class="profile-points">
+          <li><div class="pp-icon">🎙️</div><div><strong>Registra en segundos</strong> — Di cómo te sientes con tu propia voz. Sin formularios, sin tecnicismos. La IA entiende "me siento pesado y me duele un poco el pecho".</div></li>
+          <li><div class="pp-icon">🆘</div><div><strong>S.O.S. inteligente</strong> — Un botón grande. Al presionarlo, tu familia y médico reciben tu historial actualizado. Continuum te dice a qué hospital ir y cuánto tiempo de espera hay.</div></li>
+          <li><div class="pp-icon">💆</div><div><strong>Paz mental compartida</strong> — Tu familiar puede ver en su celular que estás bien hoy. Sin llamadas de pánico. Sin incertidumbre constante.</div></li>
+          <li><div class="pp-icon">🔔</div><div><strong>Alertas que importan</strong> — Solo recibes notificaciones cuando hay un riesgo real. Sin ruido. Sin falsas alarmas.</div></li>
+        </ul>
+        <a href="#mvp" class="btn-dark">Quiero probarlo →</a>
+      </div>
+      <div class="profile-right">
+        <div class="mock-topbar">
+          <div class="mock-dot" style="background:#ff5f57"></div>
+          <div class="mock-dot" style="background:#ffbd2e"></div>
+          <div class="mock-dot" style="background:#28c840"></div>
+          <div class="mock-title">Continuum — Vista Paciente</div>
+        </div>
+        <div class="mock-body">
+          <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:16px">Hoy · martes 29 de abril</div>
+          <div style="background:var(--green-bg);border:1px solid #c3e8d0;border-radius:8px;padding:14px;margin-bottom:16px;font-size:0.82rem;color:var(--green)">
+            ✓ Registro de hoy enviado · Todo estable
+          </div>
+          <div class="mock-row"><span class="mock-label">Presión arterial</span><span class="mock-badge badge-green">Normal</span></div>
+          <div class="mock-row"><span class="mock-label">Glucosa</span><span class="mock-badge badge-amber">Revisar</span></div>
+          <div class="mock-row"><span class="mock-label">Síntomas hoy</span><span class="mock-val">Cansancio leve</span></div>
+          <div class="mock-row"><span class="mock-label">Familia notificada</span><span class="mock-badge badge-green">✓ Visto</span></div>
+          <div class="mock-chart">
+            <div class="mock-chart-label">Síntomas — últimos 7 días</div>
+            <div class="sparkline">
+              <div class="spark-bar hi" style="height:80%"></div>
+              <div class="spark-bar md" style="height:40%"></div>
+              <div class="spark-bar hi" style="height:60%"></div>
+              <div class="spark-bar" style="height:20%"></div>
+              <div class="spark-bar md" style="height:50%"></div>
+              <div class="spark-bar" style="height:25%"></div>
+              <div class="spark-bar hi" style="height:70%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÉDICO -->
+    <div class="profile-panel" id="profile-medico">
+      <div class="profile-left">
+        <h3>Menos suposiciones,<br><em style="font-family:var(--serif);font-style:italic">más decisiones</em></h3>
+        <p>Tus pacientes entran al consultorio con un historial clínico estructurado y curado por IA. Más tiempo para cuidar, menos para reconstruir el pasado.</p>
+        <ul class="profile-points">
+          <li><div class="pp-icon">📊</div><div><strong>Trayectorias clínicas</strong> — No datos aislados. Tendencias visuales de semanas o meses. Detecta el deterioro silencioso antes de que llegue a urgencias.</div></li>
+          <li><div class="pp-icon">📄</div><div><strong>RDA pre-consulta</strong> — El Resumen de Datos Actualizados llega a tu panel antes de que el paciente entre al consultorio. La cita empieza con contexto real.</div></li>
+          <li><div class="pp-icon">🚨</div><div><strong>Alertas sin ruido</strong> — Solo recibes una alerta cuando hay un patrón que requiere atención. Sin fatiga informativa.</div></li>
+          <li><div class="pp-icon">🔗</div><div><strong>Sin hardware extra</strong> — Funciona con lo que el paciente ya tiene. No requieres que compren wearables caros para obtener datos continuos.</div></li>
+        </ul>
+        <a href="#mvp" class="btn-dark">Unirme como médico beta →</a>
+      </div>
+      <div class="profile-right">
+        <div class="mock-topbar">
+          <div class="mock-dot" style="background:#ff5f57"></div>
+          <div class="mock-dot" style="background:#ffbd2e"></div>
+          <div class="mock-dot" style="background:#28c840"></div>
+          <div class="mock-title">Continuum — Vista Médico</div>
+        </div>
+        <div class="mock-body">
+          <div style="font-size:0.72rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink4);margin-bottom:16px">Panel · 4 pacientes activos hoy</div>
+          <div class="mock-row"><span class="mock-label">Carlos M., 68 · Cardíaco</span><span class="mock-badge badge-amber">⚠ Ver tendencia</span></div>
+          <div class="mock-row"><span class="mock-label">Rosa L., 72 · Diabética</span><span class="mock-badge badge-green">✓ Estable</span></div>
+          <div class="mock-row"><span class="mock-label">Jorge P., 55 · HTA</span><span class="mock-badge badge-red">🔴 Alerta activa</span></div>
+          <div class="mock-row"><span class="mock-label">Lucía R., 64 · Cardíaca</span><span class="mock-badge badge-green">✓ Estable</span></div>
+          <div style="background:var(--red-bg);border:1px solid #f0d5d5;border-radius:8px;padding:14px;margin-top:16px;font-size:0.82rem;color:var(--red)">
+            🔴 Jorge P. — Patrón inusual detectado hace 2 días. RDA disponible.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNCIONALIDADES -->
+<section id="funcionalidades">
+  <div class="sec-max">
+    <div class="overline">Funcionalidades</div>
+    <h2 class="sec-title">Cuatro módulos.<br>Un propósito.</h2>
+    <p class="sec-sub" style="margin-bottom:40px">La tecnología invisible que hace visible el cuidado continuo.</p>
+    <div class="features-board">
+      <div class="ftabs">
+        <button class="ftab active" onclick="showFeat('diario',this)"><span class="ftab-icon">🎙️</span> Diario Clínico IA</button>
+        <button class="ftab" onclick="showFeat('sos',this)"><span class="ftab-icon">🆘</span> Botón S.O.S.</button>
+        <button class="ftab" onclick="showFeat('dashboard',this)"><span class="ftab-icon">📊</span> Dashboard</button>
+        <button class="ftab" onclick="showFeat('alertas',this)"><span class="ftab-icon">🔔</span> Alertas Predictivas</button>
+      </div>
+      <div>
+        <div id="feat-diario" class="fpanel active">
+          <h3>Diario Clínico Inteligente</h3>
+          <p>El paciente habla. La IA (Clinical Sieve) escucha, interpreta y convierte lenguaje natural en datos clínicos estructurados listos para el médico. Sin formularios.</p>
+          <div class="ftags"><span class="ftag">Voz a texto</span><span class="ftag">Lenguaje natural</span><span class="ftag">Interfaz para adultos mayores</span><span class="ftag">Sin tecnicismos</span></div>
+          <div class="fmock">
+            <div class="fmock-row"><div class="fdot fdot-g"></div><strong>"Me siento cansado desde ayer"</strong></div>
+            <div class="fmock-row"><div class="fdot fdot-y"></div>Procesando síntoma + cruzando con histórico...</div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div><strong>Síntoma registrado · Intensidad: leve · Sin alerta</strong></div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div>RDA actualizado para próxima consulta ✓</div>
+          </div>
+        </div>
+        <div id="feat-sos" class="fpanel">
+          <h3>Botón S.O.S. Inteligente</h3>
+          <p>Un botón grande y visible. Al presionarlo, Continuum envía el historial médico actualizado a la red de apoyo y localiza el hospital más cercano con menor tiempo de espera.</p>
+          <div class="ftags"><span class="ftag">Alerta inmediata</span><span class="ftag">Geolocalización</span><span class="ftag">Tiempos de espera</span><span class="ftag">RDA automático</span></div>
+          <div class="fmock">
+            <div class="fmock-row"><div class="fdot fdot-r"></div><strong>S.O.S. activado — 1:34 AM</strong></div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div>Familia notificada — 2 contactos alertados ✓</div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div>Médico tratante recibió RDA ✓</div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div><strong>Hospital más cercano: 12 min · 8 en espera</strong></div>
+          </div>
+        </div>
+        <div id="feat-dashboard" class="fpanel">
+          <h3>Dashboard de Paz Mental Compartida</h3>
+          <p>Vistas diferenciadas. El médico ve trayectorias clínicas con tendencias históricas. La familia ve un panel de estado simple. Sin ruido visual, sin datos que abrumen.</p>
+          <div class="ftags"><span class="ftag">Vista médico</span><span class="ftag">Vista familiar</span><span class="ftag">Trayectorias</span><span class="ftag">Tendencias</span></div>
+          <div class="fmock">
+            <div class="fmock-row"><div class="fdot fdot-g"></div><strong>Presión arterial</strong> — Estable últimos 14 días</div>
+            <div class="fmock-row"><div class="fdot fdot-y"></div><strong>Glucosa</strong> — Variación el martes, seguimiento activo</div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div><strong>Síntomas reportados</strong> — 6 de 7 días esta semana</div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div>Familiar notificado · Todo estable ✓</div>
+          </div>
+        </div>
+        <div id="feat-alertas" class="fpanel">
+          <h3>Alertas Predictivas tipo Push</h3>
+          <p>Las notificaciones solo llegan cuando hay un riesgo real o un silencio clínico prolongado. Sin falsas alarmas. Sin fatiga de notificaciones. Solo lo que importa.</p>
+          <div class="ftags"><span class="ftag">Sin falsas alarmas</span><span class="ftag">Predictivo</span><span class="ftag">Silencio clínico</span><span class="ftag">Intervención temprana</span></div>
+          <div class="fmock">
+            <div class="fmock-row"><div class="fdot fdot-y"></div>Patrón inusual detectado — monitoreo aumentado</div>
+            <div class="fmock-row"><div class="fdot fdot-y"></div>Día 2: Anomalía confirmada en múltiples señales</div>
+            <div class="fmock-row"><div class="fdot fdot-r"></div><strong>Alerta enviada a médico — acción sugerida</strong></div>
+            <div class="fmock-row"><div class="fdot fdot-g"></div>Cita preventiva agendada — urgencia evitada ✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULADORA -->
+<section class="calc-section" id="calculadora">
+  <div class="sec-max">
+    <div class="overline">Calculadora de impacto</div>
+    <h2 class="sec-title">¿Cuánto cuesta no tener Continuum?</h2>
+    <p class="sec-sub" style="margin-bottom:52px">Ajusta los datos de tu situación y ve el costo real de las urgencias evitables frente al costo de la suscripción.</p>
+    <div class="calc-grid">
+      <div class="calc-box">
+        <h3>Tu situación actual</h3>
+        <div class="calc-row">
+          <div class="calc-label">Urgencias por año <span id="v-urgencias">4</span></div>
+          <input type="range" min="1" max="12" value="4" id="sl-urgencias" oninput="calcUpdate()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Costo por urgencia (COP) <span id="v-costo">$800.000</span></div>
+          <input type="range" min="200000" max="3000000" step="100000" value="800000" id="sl-costo" oninput="calcUpdate()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Días de trabajo perdidos por urgencia <span id="v-dias">2</span></div>
+          <input type="range" min="0" max="10" value="2" id="sl-dias" oninput="calcUpdate()">
+        </div>
+        <div class="calc-row">
+          <div class="calc-label">Salario diario estimado (COP) <span id="v-salario">$100.000</span></div>
+          <input type="range" min="30000" max="500000" step="10000" value="100000" id="sl-salario" oninput="calcUpdate()">
+        </div>
+      </div>
+      <div class="calc-result">
+        <h3>Tu costo real anual sin Continuum</h3>
+        <div class="result-row">
+          <span class="result-label">Urgencias directas</span>
+          <span class="result-val" id="r-urgencias">$3.200.000</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Días de trabajo perdidos</span>
+          <span class="result-val" id="r-dias">$800.000</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Costo de Continuum (año)</span>
+          <span class="result-val" style="color:#666">~$360.000</span>
+        </div>
+        <div class="result-highlight">
+          <div class="result-big" id="r-ahorro">$3.640.000</div>
+          <div class="result-big-label">ahorro potencial anual</div>
+        </div>
+        <div class="bar-chart" id="bar-chart">
+          <div class="bar-row">
+            <div class="bar-name">Sin Continuum</div>
+            <div class="bar-track"><div class="bar-fill" id="bar-sin" style="width:100%;background:#555"></div></div>
+            <div class="bar-val" id="bv-sin">$4M</div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-name">Con Continuum</div>
+            <div class="bar-track"><div class="bar-fill" id="bar-con" style="width:8%;background:#fff"></div></div>
+            <div class="bar-val" id="bv-con">$360K</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section id="como-funciona">
+  <div class="sec-max">
+    <div class="overline" style="text-align:center">Cómo funciona</div>
+    <h2 class="sec-title" style="text-align:center;margin:0 auto 14px">3 pasos para cerrar<br>la brecha del cuidado</h2>
+    <p class="sec-sub" style="text-align:center;margin:0 auto 52px">Sin hardware caro. Solo tu celular y tu voz.</p>
+    <div class="steps-grid">
+      <div class="step-cell">
+        <div class="step-num">01</div>
+        <h3>Registra en 30 segundos</h3>
+        <p>Habla o escribe cómo te sientes. La IA interpreta el síntoma, lo clasifica y lo guarda como un dato clínico estructurado. Sin formularios, sin tecnicismos.</p>
+      </div>
+      <div class="step-cell">
+        <div class="step-num">02</div>
+        <h3>Monitoreo continuo en segundo plano</h3>
+        <p>Continuum analiza patrones diarios. Cuando detecta una anomalía real, alerta a tu red de apoyo antes de que el problema escale. La familia respira tranquila.</p>
+      </div>
+      <div class="step-cell">
+        <div class="step-num">03</div>
+        <h3>Tu médico llega preparado</h3>
+        <p>El especialista recibe tu Resumen de Datos Actualizados antes de la consulta. Más tiempo para cuidarte, menos tiempo para reconstruir tres meses de memoria.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RIESGO -->
+<section class="risk-section">
+  <div class="sec-max">
+  <div class="risk-inner">
+    <div class="overline">El costo de no actuar</div>
+    <h2 class="sec-title">Cada día sin monitoreo es un riesgo que no ves venir</h2>
+    <p class="sec-sub">Las enfermedades crónicas no dan avisos obvios. La descompensación del martes llevaba semanas construyéndose en silencio.</p>
+    <ul class="risk-list">
+      <li><span class="risk-x">×</span>El 70% de la información vital entre consultas se pierde para siempre en la memoria del paciente.</li>
+      <li><span class="risk-x">×</span>Los biosensores premium cuestan más de $35 millones COP — fuera del alcance del 80% de pacientes crónicos en Colombia.</li>
+      <li><span class="risk-x">×</span>Sin datos continuos, el médico no puede ajustar el tratamiento a tiempo. La consulta se vuelve un reinicio, no una continuación.</li>
+      <li><span class="risk-x">×</span>Las urgencias evitables generan trauma familiar, ausentismo laboral y costos que nadie presupuesta.</li>
+    </ul>
+    <a href="#mvp" class="btn-dark">Empezar el monitoreo hoy →</a>
+  </div>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="sec-max">
+    <div class="overline">Validación con usuarios reales</div>
+    <h2 class="sec-title">Lo que nos dijeron en Colombia</h2>
+    <p class="sec-sub" style="margin-bottom:48px">Más de 20 entrevistas con pacientes crónicos, cuidadores y médicos especialistas.</p>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <p class="testi-quote">El botón S.O.S. que localiza el hospital más cercano fue lo que más nos gustó. En una crisis real no tienes tiempo de buscar nada.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👴</div>
+          <div><div class="testi-name">Paciente cardíaco, 68 años</div><div class="testi-role">Entrevista de validación · Bogotá</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-quote">Mi mamá tuvo un ACV y yo me convertí en su historia clínica humana 24/7. Un sistema que haga eso por mí lo cambiaría todo.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">👩</div>
+          <div><div class="testi-name">Hija cuidadora, 34 años</div><div class="testi-role">Entrevista de validación</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <p class="testi-quote">Odio el ruido informativo. Un reporte curado por IA antes de que el paciente entre me ahorra tiempo clave en cada consulta.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">🩺</div>
+          <div><div class="testi-name">Médico especialista</div><div class="testi-role">Validación prototipo Figma</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="traction-row">
+      <div class="tr-item"><div class="tr-n">85%</div><div class="tr-l">consideró la app fácil de usar</div></div>
+      <div class="tr-item"><div class="tr-n">100%</div><div class="tr-l">de grupos de edad la consideró útil</div></div>
+      <div class="tr-item"><div class="tr-n">+20</div><div class="tr-l">entrevistas de validación</div></div>
+      <div class="tr-item"><div class="tr-n">3</div><div class="tr-l">segmentos validados</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section id="planes">
+  <div class="sec-max">
+    <div class="overline" style="text-align:center">Planes</div>
+    <h2 class="sec-title" style="text-align:center;margin:0 auto 12px">Paz mental como servicio</h2>
+    <p class="sec-sub" style="text-align:center;margin:0 auto 48px">La salud es continua. La suscripción garantiza que el sistema nunca descanse.</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-plan">Personal</div>
+        <div class="price-tag-row"><div class="price-big">Gratis</div></div>
+        <div class="price-desc">Para empezar a registrar hoy sin compromisos.</div>
+        <ul class="price-features">
+          <li><span class="pf-check">✓</span> Diario Clínico con IA básica</li>
+          <li><span class="pf-check">✓</span> Registro de síntomas por voz</li>
+          <li><span class="pf-check">✓</span> Historial últimos 30 días</li>
+        </ul>
+        <a href="#mvp" class="btn-light" style="display:block;text-align:center">Comenzar gratis</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-plan">Paz Mental · Recomendado</div>
+        <div class="price-tag-row"><div class="price-big">$XX.XXX</div><div class="price-per">/mes COP</div></div>
+        <div class="price-desc">Para paciente + hasta 3 cuidadores. Vigilancia 24/7.</div>
+        <ul class="price-features">
+          <li><span class="pf-check">✓</span> Todo el plan Gratis</li>
+          <li><span class="pf-check">✓</span> Botón S.O.S. con enrutamiento inteligente</li>
+          <li><span class="pf-check">✓</span> Dashboard para hasta 3 familiares</li>
+          <li><span class="pf-check">✓</span> Alertas predictivas en tiempo real</li>
+          <li><span class="pf-check">✓</span> Reportes RDA automáticos para médico</li>
+          <li><span class="pf-check">✓</span> Historial clínico ilimitado</li>
+        </ul>
+        <a href="#mvp" class="btn-dark" style="display:block;text-align:center">Probar 30 días gratis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-section" id="mvp">
+  <div class="overline">Próximamente disponible</div>
+  <h2>Sé de los primeros<br>en proteger lo que más importa</h2>
+  <p>El MVP está en desarrollo. Únete a la lista de espera y obtén acceso anticipado gratuito.</p>
+  <div class="email-row">
+    <input type="email" class="email-input" placeholder="tu@correo.com" id="email-input">
+    <button class="btn-dark" onclick="joinWaitlist()">Unirme a la lista →</button>
+  </div>
+  <p class="cta-note">Sin spam. Sin compromisos. Solo te avisamos cuando el MVP esté listo.</p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Continuum</div>
+  <div class="footer-note">© 2025 · ISIS-2007 Universidad de los Andes · Hecho con 🤍 para la salud crónica en Colombia</div>
+</footer>
+
+<script>
+/* ── Profile toggle ── */
+function switchProfile(id, btn) {
+  document.querySelectorAll('.profile-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.profile-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('profile-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── Feature tabs ── */
+function showFeat(id, btn) {
+  document.querySelectorAll('.fpanel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+  document.getElementById('feat-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ── Calculator ── */
+function fmt(n) {
+  if (n >= 1000000) return '$' + (n/1000000).toFixed(1) + 'M';
+  if (n >= 1000) return '$' + Math.round(n/1000) + 'K';
+  return '$' + n.toLocaleString('es-CO');
+}
+function fmtFull(n) {
+  return '$' + Math.round(n).toLocaleString('es-CO');
+}
+
+function calcUpdate() {
+  const urgencias = parseInt(document.getElementById('sl-urgencias').value);
+  const costo = parseInt(document.getElementById('sl-costo').value);
+  const dias = parseInt(document.getElementById('sl-dias').value);
+  const salario = parseInt(document.getElementById('sl-salario').value);
+
+  document.getElementById('v-urgencias').textContent = urgencias;
+  document.getElementById('v-costo').textContent = fmtFull(costo);
+  document.getElementById('v-dias').textContent = dias;
+  document.getElementById('v-salario').textContent = fmtFull(salario);
+
+  const costoUrgencias = urgencias * costo;
+  const costoDias = urgencias * dias * salario;
+  const costoSin = costoUrgencias + costoDias;
+  const costoContin = 360000;
+  const ahorro = costoSin - costoContin;
+
+  document.getElementById('r-urgencias').textContent = fmtFull(costoUrgencias);
+  document.getElementById('r-dias').textContent = fmtFull(costoDias);
+  document.getElementById('r-ahorro').textContent = ahorro > 0 ? fmtFull(ahorro) : '$0';
+
+  // bars
+  const pct = costoSin > 0 ? Math.max(4, Math.round((costoContin / costoSin) * 100)) : 8;
+  document.getElementById('bar-sin').style.width = '100%';
+  document.getElementById('bar-con').style.width = pct + '%';
+  document.getElementById('bv-sin').textContent = fmt(costoSin);
+  document.getElementById('bv-con').textContent = fmt(costoContin);
+}
+calcUpdate();
+
+/* ── Waitlist ── */
+function joinWaitlist() {
+  const email = document.getElementById('email-input').value;
+  if (!email || !email.includes('@')) {
+    alert('Por favor ingresa un correo válido.');
+    return;
+  }
+  alert('¡Listo! Te avisaremos cuando el MVP esté disponible, ' + email);
+  document.getElementById('email-input').value = '';
+}
+</script>
+</body>
+</html>

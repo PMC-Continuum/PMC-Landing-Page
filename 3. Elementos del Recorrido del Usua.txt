@@ -1,0 +1,30 @@
+3. Elementos del Recorrido del Usuario (Landing Page)
+Esta sección debe guiar al cuidador desde el miedo hasta la acción.
+
+* Dirección clara y convincente (CTA):
+
+- Opción Principal: "Empieza a cuidar a tu ser querido hoy mismo"
+
+- Botón: [Pruébalo Gratis ahora]
+
+- Opción Secundaria (Para el Dashboard): "Ver demostración para cuidadores"
+
+* Riesgos de no tomar acción (Urgencia):
+
+- "La brecha entre consultas médicas es una caja negra. Sin un registro diario, el 70% de los deterioros clínicos pasan desapercibidos hasta que se convierten en una urgencia hospitalaria. No esperes a la próxima crisis para saber cómo está tu padre."
+
+* Resultados positivos (Métricas de desempeño):
+
+- "92% de precisión en la detección de tendencias de salud mediante IA de voz."
+
+- "Reducción proyectada del 30% en visitas a urgencias por descompensaciones evitables."
+
+- "Ahorro de hasta 4 horas semanales para el cuidador en gestión de datos médicos."
+
+* Plan de 3 pasos para evolucionar (Reducción de riesgo):
+
+- Registro de Voz Diario: El paciente habla con Continuum por 1 minuto al día; la IA extrae los síntomas automáticamente.
+
+- Sincronización de Red de Apoyo: El cuidador recibe un reporte visual de "Paz Mental" en tiempo real.
+
+- Entrega Médica Estructurada: En la próxima cita, entregas al doctor una trayectoria clínica completa, eliminando las suposiciones.
